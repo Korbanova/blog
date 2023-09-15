@@ -22,12 +22,11 @@ header.header {
           margin-right: 30px;
           list-style: none;
 
-          &.active {
-            border-bottom-color: $light-blue-text-color;
+          &.active a {
+            color: $light-blue-text-color;
           }
 
           a {
-            font-size: 16px;
             color: $blue-text-color;
             cursor: pointer;
             text-decoration: none;
@@ -38,7 +37,6 @@ header.header {
 
     .header-phone {
       margin-right: 141px;
-      font-size: 16px;
       color: $light-blue-text-color;
       text-decoration: none;
     }
@@ -49,7 +47,6 @@ header.header {
 
       a {
         margin-left: 7px;
-        font-size: 16px;
         color: $blue-text-color;
         text-decoration: none;
         cursor: pointer;

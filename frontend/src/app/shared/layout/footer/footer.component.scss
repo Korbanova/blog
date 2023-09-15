@@ -10,6 +10,17 @@ footer.footer {
     margin-bottom: 40px;
     align-items: center;
 
+    .logo {
+      display: block;
+      width: 85px;
+      height: 47px;
+
+      img {
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
     nav ul {
       display: flex;
       margin-left: 40px;
@@ -80,7 +91,7 @@ footer.footer {
     }
   }
 
-  .footer-text{
-    color:$light-blue-text-color;
+  .footer-text {
+    color: $light-blue-text-color;
   }
 }

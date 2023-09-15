@@ -28,3 +28,19 @@ html, body {
   //  padding: 10px;
   //}
 }
+
+
+.input {
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 2px solid $light-blue-text-color;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: $blue-text-color;
+
+  &::placeholder{
+    color: $gray-text-color;
+  }
+}

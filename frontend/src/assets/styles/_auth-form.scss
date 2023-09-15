@@ -1,7 +1,7 @@
 @import "variables";
 
 .auth-form {
-  margin-top: 14px;
+  //margin-top: 14px;
 
   .auth-title {
     margin-bottom: 40px;
@@ -14,9 +14,8 @@
   .auth-inputs {
 
     .auth-input {
-      &:first-child {
-        margin-bottom: 5px;
-      }
+      margin-bottom: 5px;
+
 
       input {
         width: 422px;
@@ -40,7 +39,7 @@
         line-height: 130%;
 
         a {
-          color: $blue-text-color;
+          color: $light-blue-text-color;
           text-decoration: none;
         }
       }

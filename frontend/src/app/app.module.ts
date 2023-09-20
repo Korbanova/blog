@@ -10,9 +10,11 @@ import {RouterModule} from "@angular/router";
 import { MainComponent } from './views/main/main.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { OrderCallComponent } from './shared/components/order-call/order-call.component';
 import {SharedModule} from "./shared/shared.module";
 import {UserAgreementComponent} from "./views/user-agreement/user-agreement.component";
+import {HttpClientModule} from "@angular/common/http";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -25,14 +27,19 @@ import {UserAgreementComponent} from "./views/user-agreement/user-agreement.comp
     UserAgreementComponent,
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     RouterModule,
     MatDialogModule,
+    MatSnackBarModule,
+    MatMenuModule,
     SharedModule,
     AppRoutingModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -41,8 +41,9 @@
           <label for="remember">Запомнить меня</label>
         </div>
         <div class="auth-button">
-          <button class="button" [disabled]="loginForm.invalid">
-<!--                  (click)="login()"-->
+          <button class="button"
+                  [disabled]="loginForm.invalid"
+                  (click)="login()">
           Войти</button>
         </div>
         <div class="auth-link">

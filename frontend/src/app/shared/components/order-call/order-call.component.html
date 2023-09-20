@@ -1,0 +1,51 @@
+<div class="order-popup" [formGroup]="orderForm">
+  <div class="order-popup-close" (click)="closePopup()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="1.93562" y1="2.6499" x2="13.9564" y2="14.6707" stroke="#A8ABA7" stroke-linecap="round"/>
+      <line x1="13.9238" y1="2.62971" x2="1.90301" y2="14.6505" stroke="#A8ABA7" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="order-popup-title">
+    Закажите бесплатную консультацию!
+  </div>
+  <div class="auth-form">
+    <div class="auth-inputs">
+      <div class="auth-input" *ngIf="!data.isConsultation">
+<!--        select проверить на заполненость-->
+        <select name="" id="" class="select">
+          <option style="color:gray" value="">{{data.name}}</option>
+          <option class="opt" value="1">новый предмет</option>
+        </select>
+      </div>
+      <div class="auth-input">
+        <input type="password" class="input" placeholder="Ваше имя"
+               formControlName="userName"
+               [ngStyle]="{'border-color': orderForm.get('userName')?.invalid
+                 && (orderForm.get('userName')?.dirty || orderForm.get('userName')?.touched) ?'red': ''}">
+      </div>
+      <div class="auth-input">
+        <input type="text" class="input" placeholder="Электронная почта"
+               formControlName="email"
+               [ngStyle]="{'border-color': orderForm.get('email')?.invalid
+                 && (orderForm.get('email')?.dirty || orderForm.get('email')?.touched) ?'red': ''}">
+      </div>
+    </div>
+    <div class="auth-button">
+
+<!--      либо сделать две разные кнопки с разными обработчиками по клику-->
+      <button class="button" [disabled]="orderForm.invalid">
+        <span *ngIf="data.isConsultation">Заказать консультацию</span>
+        <span *ngIf="!data.isConsultation">Оставить заявку</span>
+      </button>
+      <!--        (click)="signup()"-->
+    </div>
+  </div>
+
+
+
+<!--  <div class="order-popup-content">-->
+<!--    <div *ngIf="data.isConsultation">Ваш заказ оформлен.</div>-->
+<!--    <div>Вся информация о заказе была выслана вам на почту.</div>-->
+<!--    <div>Курьер свяжется с вами за два часа до доставки товара.</div>-->
+<!--  </div>-->
+</div>

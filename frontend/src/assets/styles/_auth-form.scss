@@ -17,8 +17,14 @@
       margin-bottom: 5px;
 
 
-      input {
+      input, select {
         width: 422px;
+      }
+
+      .invalid-feedback {
+        max-width: 422px;
+        color: red;
+        font-size: 12px;
       }
     }
 
@@ -50,8 +56,14 @@
   .auth-button {
     margin-top: 40px;
 
-    button.button {
-      width: 422px;
+    button {
+      &.button {
+        width: 422px;
+      }
+      &[disabled] {
+        background: #b8cbe3;
+        cursor: default;
+      }
     }
   }
 

@@ -1,0 +1,49 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/auth-form";
+@import "../../../../assets/styles/mixing";
+
+.order-popup {
+  position: relative;
+  padding: 95px 160px 94px;
+  //background-image: url("../../../../assets/images/page/order-image.png");
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  text-align: center;
+  color: $light-blue-text-color;
+
+  .order-popup-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+  }
+
+  .order-popup-title {
+    max-width: 411px;
+    margin-bottom: 20px;
+    @include head-lora-38;
+    line-height: 130%;
+  }
+
+  .order-popup-content div {
+    margin-bottom: 5px;
+    font-size: 20px;
+  }
+}
+
+.auth-form {
+  .auth-button {
+    margin-top: 20px;
+  }
+}
+
+.select {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  color: $light-blue-text-color;
+}
+
+.select::after {
+  content: "";
+}

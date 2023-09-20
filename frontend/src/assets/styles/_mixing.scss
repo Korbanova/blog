@@ -1,0 +1,17 @@
+@import "../../assets/styles/variables";
+
+@mixin head-lora-38 {
+  font-family: 'Lora', sans-serif;
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  color: $light-blue-text-color;
+}
+//
+//@mixin head-lora-36 {
+//  font-family: 'Lora', sans-serif;
+//  font-size: 36px;
+//  font-style: normal;
+//  font-weight: 400;
+//  color: #000000;
+//}

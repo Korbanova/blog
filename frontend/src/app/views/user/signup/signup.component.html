@@ -1,4 +1,4 @@
-<section class="signup" [formGroup]="signupForm">
+<section class="signup" [formGroup]="signupForm" id="jjj">
   <div class="container">
     <div class="auth-form">
       <div class="auth-title">
@@ -6,34 +6,73 @@
       </div>
       <div class="auth-inputs">
         <div class="auth-input">
-          <input type="password" class="input" placeholder="Ваше имя"
+          <input type="text" class="input" placeholder="Ваше имя"
                  formControlName="userName"
                  [ngStyle]="{'border-color': signupForm.get('userName')?.invalid
                  && (signupForm.get('userName')?.dirty || signupForm.get('userName')?.touched) ?'red': ''}">
+
+          <div class="invalid-feedback"
+               *ngIf="signupForm.get('userName')?.invalid && (signupForm.get('userName')?.dirty || signupForm.get('userName')?.touched)">
+            <div *ngIf="signupForm.get('userName')?.errors?.['required']">
+              Имя должно быть заполнено.
+            </div>
+            <div *ngIf="signupForm.get('userName')?.errors?.['pattern']">
+              Имя должно содержать только русские буквы и начинаться с большой буквы.
+            </div>
+
+            <div *ngIf="signupForm.get('userName')?.errors?.['userName']">
+              Имя некорректно.
+            </div>
+          </div>
         </div>
         <div class="auth-input">
           <input type="text" class="input" placeholder="Электронная почта"
                  formControlName="email"
                  [ngStyle]="{'border-color': signupForm.get('email')?.invalid
                  && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched) ?'red': ''}">
+          <div class="invalid-feedback"
+               *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)">
+            <div *ngIf="signupForm.get('email')?.errors?.['required']">
+              email должен быть заполнен.
+            </div>
+            <div *ngIf="signupForm.get('email')?.errors?.['email']">
+              email некорректный.
+            </div>
+          </div>
         </div>
         <div class="auth-input">
           <input type="password" class="input" placeholder="Пароль"
                  formControlName="password"
                  [ngStyle]="{'border-color': signupForm.get('password')?.invalid
                  && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched) ?'red': ''}">
+
+          <div class="invalid-feedback"
+               *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)">
+            <div *ngIf="signupForm.get('password')?.errors?.['required']">
+              Пароль должен быть заполнен.
+            </div>
+            <div *ngIf="signupForm.get('password')?.errors?.['pattern']">
+              Пароль должно содержать не менее 8 символов, содержать как минимум 1 букву в верхнем регистре и как
+              минимум 1 цифру
+            </div>
+
+            <div *ngIf="signupForm.get('password')?.errors?.['password']">
+              Пароль некорректный.
+            </div>
+          </div>
         </div>
         <div class="auth-checkbox">
           <input type="checkbox" id="agree" formControlName="agree">
           <label for="agree">
-            Я принимаю <a href="#">условия пользовательского соглашения</a> и даю <a href="#">согласие на обработку
+            Я принимаю <a routerLink="../user-agreement" fragment="user-agreement">условия пользовательского
+            соглашения</a> и даю <a routerLink="../user-agreement" fragment="processing-data">согласие на обработку
             персональных данных.</a>
           </label>
         </div>
       </div>
       <div class="auth-button">
-        <button class="button" [disabled]="signupForm.invalid">Зарегистрироваться</button>
-<!--        (click)="signup()"-->
+        <button class="button" [disabled]="signupForm.invalid" (click)="signup()">Зарегистрироваться</button>
+        <!--        (click)="signup()"-->
       </div>
       <div class="auth-link">
         Уже есть аккаунт? <a routerLink="/login">Войдите</a>

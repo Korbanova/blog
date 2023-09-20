@@ -10,12 +10,31 @@
                  [ngStyle]="{'border-color': loginForm.get('email')?.invalid
                  && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched) ?'red': ''}"
                  formControlName="email">
+
+          <div class="invalid-feedback"
+               *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+            <div *ngIf="loginForm.get('email')?.errors?.['required']">
+              email должен быть заполнен.
+            </div>
+            <div *ngIf="loginForm.get('email')?.errors?.['email']">
+              email некорректный.
+            </div>
+          </div>
         </div>
         <div class="auth-input">
           <input type="password" class="input" placeholder="Пароль"
                  [ngStyle]="{'border-color': loginForm.get('password')?.invalid
                  && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched) ?'red': ''}"
                  formControlName="password">
+          <div class="invalid-feedback"
+               *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+            <div *ngIf="loginForm.get('password')?.errors?.['required']">
+              Пароль должен быть заполнен.
+            </div>
+            <div *ngIf="loginForm.get('password')?.errors?.['password']">
+              Пароль некорректный.
+            </div>
+          </div>
         </div>
         <div class="auth-checkbox">
           <input type="checkbox" id="remember" formControlName="rememberMe">

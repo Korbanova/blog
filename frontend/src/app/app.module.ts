@@ -12,9 +12,11 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {SharedModule} from "./shared/shared.module";
 import {UserAgreementComponent} from "./views/user-agreement/user-agreement.component";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatMenuModule} from "@angular/material/menu";
+import {AuthInterceptor} from "./core/auth/auth.interceptor";
+import {CarouselModule} from "ngx-owl-carousel-o";
 
 
 @NgModule({
@@ -34,11 +36,18 @@ import {MatMenuModule} from "@angular/material/menu";
     MatSnackBarModule,
     MatMenuModule,
     SharedModule,
+    CarouselModule,
     AppRoutingModule,
     BrowserAnimationsModule
   ],
   providers: [
-    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi:true  //чтобы по этому ключу не перезатереть Interceptor, а добавить
+    }
+
   ],
   bootstrap: [AppComponent]
 })

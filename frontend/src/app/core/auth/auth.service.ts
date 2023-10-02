@@ -5,6 +5,7 @@ import {DefaultResponseType} from "../../../types/default-response.type";
 import {LoginResponseType} from "../../../types/login-response.type";
 import {environment} from "../../../environments/environment";
 import {UserInfoType} from "../../../types/user-info.type";
+import {UserInfoResponseType} from "../../../types/user-info-response.type";
 
 @Injectable({
   providedIn: 'root'
@@ -31,11 +32,11 @@ export class AuthService {
 
   }
 
-  signup(email: string, password: string, passwordRepeat: string): Observable<DefaultResponseType | LoginResponseType> {
+  signup(name: string, email: string, password: string): Observable<DefaultResponseType | LoginResponseType> {
     return this.http.post<DefaultResponseType | LoginResponseType>(environment.api + 'signup', {
+      name,
       email,
-      password,
-      passwordRepeat
+      password
     })
   }
 
@@ -43,7 +44,7 @@ export class AuthService {
     const tokens = this.getTokens();
     if (tokens && tokens.refreshToken) {
       return this.http.post<DefaultResponseType | LoginResponseType>(environment.api + 'refresh', {
-        refreshToken : tokens.refreshToken
+        refreshToken: tokens.refreshToken
       })
     }
 
@@ -86,6 +87,20 @@ export class AuthService {
       refreshToken: localStorage.getItem(this.refreshTokenKey)
     }
   }
+
+  public userInfo(): Observable<DefaultResponseType | UserInfoResponseType> {
+    //Получить инф о пользователе. Здесь нужно отправить запрос
+    const tokens = this.getTokens();
+    if (tokens && tokens.accessToken) {
+      return this.http.get<DefaultResponseType | UserInfoResponseType>(environment.api + 'users', {
+        headers: {'x-auth': tokens.accessToken}
+      });
+    }
+
+    throw throwError(() => 'Can not find token')
+
+  }
+
   //
   // get userId(): null | string {
   //   return localStorage.getItem(this.userIdKey);
@@ -99,8 +114,10 @@ export class AuthService {
   //   }
   // }
 
-  public setUserInfo(info: UserInfoType): void {
+  public setUserInfoInStorage(info: UserInfoType): void {
     localStorage.setItem(this.userInfoKey, JSON.stringify(info));
+    this.isLogged = true;
+    this.isLogged$.next(true);
   }
 
   public removeUserInfo(): void {

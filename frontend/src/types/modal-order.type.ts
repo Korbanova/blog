@@ -1,4 +1,6 @@
+import {RequestTypeType} from "./request-type.type";
+
 export type ModalOrderType = {
-  isConsultation: boolean;
-  name?: string;
+  type: RequestTypeType;
+  serviceName?: string;
 }

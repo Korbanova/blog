@@ -4,7 +4,8 @@ header.header {
   padding: 40px 0;
 
   .container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 0.9fr 2.4fr  minmax(144px, 1.1fr) fit-content(200px);
     justify-content: space-between;
     align-items: center;
     font-family: Montserrat, sans-serif;
@@ -21,9 +22,6 @@ header.header {
     }
 
     .header-menu {
-      margin-left: 100px;
-      margin-right: 227px;
-
       nav ul {
         display: flex;
         margin: 0;
@@ -47,7 +45,6 @@ header.header {
     }
 
     .header-phone {
-      margin-right: 141px;
       color: $light-blue-text-color;
       text-decoration: none;
     }

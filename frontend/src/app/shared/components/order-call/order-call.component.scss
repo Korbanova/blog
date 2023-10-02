@@ -4,7 +4,14 @@
 
 .order-popup {
   position: relative;
-  padding: 95px 160px 94px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  //padding-top: 95px;
+  width: 727px;
+  height: 489px;
+  box-sizing: border-box;
   //background-image: url("../../../../assets/images/page/order-image.png");
   background-position: bottom center;
   background-repeat: no-repeat;
@@ -19,15 +26,45 @@
   }
 
   .order-popup-title {
-    max-width: 411px;
     margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
     @include head-lora-38;
     line-height: 130%;
+    &.main{
+      max-width: 411px;
+    }
   }
 
   .order-popup-content div {
     margin-bottom: 5px;
     font-size: 20px;
+  }
+
+  .order-popup-info{
+    .order-popup-text{
+      margin-bottom: 40px;
+      text-align: center;
+      font-family: 'Montserrat',sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 130%;
+      color: $dark-text-color;
+    }
+    .button{
+      width: 73px;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 130%;
+    }
+  }
+
+  .order-popup-error{
+    margin-top: 7px;
+    color: red;
   }
 }
 

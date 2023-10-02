@@ -5,47 +5,61 @@
       <line x1="13.9238" y1="2.62971" x2="1.90301" y2="14.6505" stroke="#A8ABA7" stroke-linecap="round"/>
     </svg>
   </div>
-  <div class="order-popup-title">
-    Закажите бесплатную консультацию!
-  </div>
-  <div class="auth-form">
-    <div class="auth-inputs">
-      <div class="auth-input" *ngIf="!data.isConsultation">
-<!--        select проверить на заполненость-->
-        <select name="" id="" class="select">
-          <option style="color:gray" value="">{{data.name}}</option>
-          <option class="opt" value="1">новый предмет</option>
-        </select>
-      </div>
-      <div class="auth-input">
-        <input type="password" class="input" placeholder="Ваше имя"
-               formControlName="userName"
-               [ngStyle]="{'border-color': orderForm.get('userName')?.invalid
+
+  <div *ngIf="isError === null || isError === true; then mainBlock else successResponseBlock"> </div>
+
+  <ng-template #mainBlock>
+    <div class="order-popup-title main" >
+      <span *ngIf="requestType === requestTypes.order">Заявка на услугу</span>
+      <span *ngIf="requestType === requestTypes.consultation">Закажите бесплатную консультацию!</span>
+    </div>
+    <div class="auth-form">
+      <div class="auth-inputs">
+        <div class="auth-input" *ngIf="requestType === requestTypes.order">
+          <select name="" id="" class="select" formControlName="service">
+            <option class="opt" value="">Выберите услугу: </option>
+            <option class="opt" *ngFor="let serv of services"
+                    value="{{serv.title}}"
+                    [selected]="data.serviceName === serv.title">
+              {{serv.title}}
+            </option>
+          </select>
+        </div>
+        <div class="auth-input">
+          <input type="text" class="input" placeholder="Ваше имя"
+                 formControlName="userName"
+                 [ngStyle]="{'border-color': orderForm.get('userName')?.invalid
                  && (orderForm.get('userName')?.dirty || orderForm.get('userName')?.touched) ?'red': ''}">
+        </div>
+        <div class="auth-input">
+          <input type="text" class="input" placeholder="Ваш номер телефона"
+                 formControlName="phone"
+                 [ngStyle]="{'border-color': orderForm.get('phone')?.invalid
+                 && (orderForm.get('phone')?.dirty || orderForm.get('phone')?.touched) ?'red': ''}">
+        </div>
       </div>
-      <div class="auth-input">
-        <input type="text" class="input" placeholder="Электронная почта"
-               formControlName="email"
-               [ngStyle]="{'border-color': orderForm.get('email')?.invalid
-                 && (orderForm.get('email')?.dirty || orderForm.get('email')?.touched) ?'red': ''}">
+      <div class="auth-button">
+        <!--      либо сделать две разные кнопки с разными обработчиками по клику-->
+        <button class="button"
+                [disabled]="orderForm.invalid"
+                (click)="addRequests()">
+          <span *ngIf="requestType === requestTypes.consultation">Заказать консультацию</span>
+          <span *ngIf="requestType === requestTypes.order">Оставить заявку</span>
+        </button>
       </div>
     </div>
-    <div class="auth-button">
-
-<!--      либо сделать две разные кнопки с разными обработчиками по клику-->
-      <button class="button" [disabled]="orderForm.invalid">
-        <span *ngIf="data.isConsultation">Заказать консультацию</span>
-        <span *ngIf="!data.isConsultation">Оставить заявку</span>
-      </button>
-      <!--        (click)="signup()"-->
+    <div class="order-popup-error" *ngIf="isError === true">
+      Произошла ошибка при отправке формы, попробуйте еще раз.
     </div>
-  </div>
+  </ng-template>
 
-
-
-<!--  <div class="order-popup-content">-->
-<!--    <div *ngIf="data.isConsultation">Ваш заказ оформлен.</div>-->
-<!--    <div>Вся информация о заказе была выслана вам на почту.</div>-->
-<!--    <div>Курьер свяжется с вами за два часа до доставки товара.</div>-->
-<!--  </div>-->
+  <ng-template #successResponseBlock>
+    <div class="order-popup-title">
+      Спасибо за вашу заявку!
+    </div>
+    <div class="order-popup-info">
+      <div class="order-popup-text">Мы свяжемся с вами при первой же возможности.</div>
+      <button class="button" (click)="closePopup()">Окей</button>
+    </div>
+  </ng-template>
 </div>

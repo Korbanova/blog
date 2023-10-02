@@ -44,3 +44,22 @@ html, body {
     color: $gray-text-color;
   }
 }
+.owl-theme .owl-nav.disabled+.owl-dots {
+  position: absolute;
+    bottom: 10px;
+    left: calc(50% - 10px);
+}
+
+//.owl-dots .ng-star-inserted{
+//  position: absolute;
+//  bottom: 0;
+//  left: calc(50% - 10px);
+//}
+
+.owl-theme .owl-dots .owl-dot span{
+  background: transparent;
+  border: 1px solid white;
+}
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+  background: white;
+}

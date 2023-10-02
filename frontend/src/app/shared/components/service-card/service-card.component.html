@@ -1,0 +1,13 @@
+<div class="service-card" *ngIf="service">
+  <div class="service-card-image">
+    <img src="{{service.image}}" alt="service">
+  </div>
+  <div class="service-card-title">{{service.title}}</div>
+  <div class="service-card-description">{{service.description}}</div>
+  <div class="service-card-info">
+    <div class="service-card-price">От {{service.price}}₽</div>
+    <div class="service-card-action">
+      <button class="button" (click)="openPopup()">Подробнее</button>
+    </div>
+  </div>
+</div>

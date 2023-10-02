@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {LoginResponseType} from "../../../../types/login-response.type";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {UserInfoResponseType} from "../../../../types/user-info-response.type";
 
 @Component({
   selector: 'app-login',
@@ -39,12 +40,6 @@ export class LoginComponent {
             const loginResponse = data as LoginResponseType;
             if (!loginResponse.accessToken || !loginResponse.refreshToken || !loginResponse.userId) {
               error = 'Ошибка при авторизации';
-            } else {
-              //Получить инф о пользователе. Здесь нужно отправить запрос
-              this.authService.setUserInfo({
-                fullName: 'Kate',
-                userId: loginResponse.userId,
-              })
             }
             if (error) {
               this._snackBar.open(error);
@@ -53,7 +48,23 @@ export class LoginComponent {
 
             // set tokens
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
-            // this.authService.userId = loginResponse.userId;
+
+            //Получить инф о пользователе.
+            this.authService.userInfo()
+              .subscribe((data: UserInfoResponseType | DefaultResponseType) => {
+                let error = null;
+                if ((data as DefaultResponseType).error !== undefined) {
+                  error = (data as DefaultResponseType).message;
+                  this._snackBar.open(error);
+                  throw new Error(error);
+                }
+                const userInfoResponse = data as UserInfoResponseType;
+
+                this.authService.setUserInfoInStorage({
+                  fullName: userInfoResponse.name,
+                  userId: userInfoResponse.id,
+                })
+              })
 
             this._snackBar.open('Вы успешно авторизовались');
             this.router.navigate(['/']);

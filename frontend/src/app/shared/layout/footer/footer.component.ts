@@ -2,6 +2,7 @@ import {Component, ElementRef, TemplateRef, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {OrderCallComponent} from "../../components/order-call/order-call.component";
+import {RequestTypeType} from "../../../../types/request-type.type";
 
 @Component({
   selector: 'app-footer',
@@ -15,7 +16,7 @@ export class FooterComponent {
 
   openPopup(){
      const dialogRef = this.dialog.open(OrderCallComponent, {
-       data: {isConsultation: true}
+       data: {type: RequestTypeType.consultation}
        // data: {isConsultation: false, name: 'Very '}
      });
   }

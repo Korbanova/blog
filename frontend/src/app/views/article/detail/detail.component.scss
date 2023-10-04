@@ -1,0 +1,323 @@
+@import "../../../../assets/styles/variables";
+
+.detail {
+  padding-top: 80px;
+  padding-bottom: 120px;
+
+  .container {
+    .detail-pre-title {
+      margin-bottom: 60px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 130%;
+      color: $light-blue-text-color;
+
+      a, span {
+        margin-right: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 130%;
+        color: #B9D5FD;
+        text-decoration: none;
+      }
+    }
+
+    .detail-head-article {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+
+      .detail-description {
+        max-width: 607px;
+        color: $light-blue-text-color;
+
+        .detail-description-title {
+          margin-bottom: 40px;
+          font-family: 'Lora', sans-serif;
+          font-size: 38px;
+          font-weight: 400;
+          line-height: 130%;
+        }
+
+        .detail-description-text {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 20px;
+          font-weight: 400;
+          line-height: 130%;
+        }
+      }
+
+      .detail-image {
+        width: 527px;
+        height: 320px;
+        flex-shrink: 0;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+
+
+      }
+    }
+
+    .detail-body-article {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+      .detail-info {
+        max-width: 818px;
+
+        .detail-info-text {
+          h3, h1 {
+            margin-bottom: 20px;
+            margin-top: 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 130%; /* 26px */
+            color: $light-blue-text-color;
+          }
+
+          h1 {
+            font-size: 22px;
+            margin-top: 0;
+          }
+
+          p, ul, ol {
+            margin-bottom: 20px;
+            margin-top: 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 130%;
+            color: $blue-text-color;
+          }
+
+          ul, ol {
+            padding-inline-start: 20px;
+          }
+        }
+
+        .detail-shared {
+          margin-top: 60px;
+          margin-bottom: 60px;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+
+          span {
+            margin-right: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 130%;
+            color: $light-blue-text-color;
+          }
+
+          .detail-shared-social {
+            display: flex;
+            align-items: center;
+
+            a {
+              margin-right: 13px;
+
+              &:last-child {
+                margin-right: 0;
+              }
+
+              svg {
+                display: block;
+              }
+            }
+
+
+          }
+        }
+      }
+    }
+  }
+}
+
+.comments {
+  .comments-title {
+    font-family: 'Lora', sans-serif;
+    font-size: 38px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    color: $light-blue-text-color;
+  }
+
+  .comments-add {
+
+    .comments-no {
+      margin-top: 20px;
+      font-family: 'Montserrat',sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 130%;
+      color: $blue-text-color;
+    }
+
+    textarea {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      width: 818px;
+      height: 248px;
+      padding: 20px 64px 20px 20px;
+      box-sizing: border-box;
+      border-radius: 3px;
+      border: 2px solid $light-blue-text-color;
+      background: #FFF;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%;
+
+      &::placeholder {
+        color: #A8ABA7;
+
+        line-height: 130%; /* 18.2px */
+      }
+    }
+
+    .comment-add-action {
+      .button {
+        width: 422px;
+        line-height: 130%
+      }
+    }
+  }
+
+  .comments-log {
+    margin-top: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    color: $blue-text-color;
+
+    a {
+      color: $light-blue-text-color;
+      text-decoration: none;
+    }
+  }
+
+  .comments-content {
+    margin-top: 60px;
+
+    .comments-items {
+      margin-bottom: 60px;
+
+      .comments-item {
+        margin-bottom: 40px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .comments-item-info {
+          display: flex;
+
+          .comments-item-info-image {
+            margin-right: 26px;
+          }
+
+          .comments-item-info-user {
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+
+            .comments-item-info-user-name {
+              margin-bottom: 10px;
+              font-size: 18px;
+              color: $light-blue-text-color;
+              line-height: 130%;
+            }
+
+            .comments-item-info-user-date {
+              font-size: 14px;
+              color: #BEBEBE;
+              line-height: 130%;
+            }
+          }
+        }
+
+        .comments-item-text {
+          margin-bottom: 39px;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 140%;
+          color: $blue-text-color;
+        }
+
+        .comments-item-actions {
+          display: flex;
+          align-items: center;
+
+          .comments-item-action {
+            display: flex;
+            margin-right: 15px;
+            align-items: center;
+
+            &:last-child {
+              margin-right: 0;
+            }
+
+            .comments-item-action-count {
+              margin-right: 3px;
+            }
+
+            svg {
+              display: block;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+
+    .comments-action {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      span {
+        margin-right: 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 130%;
+        color: $light-blue-text-color;
+      }
+
+    }
+  }
+
+}
+
+.related-article {
+  margin-top: 60px;
+
+  .related-article-title {
+    margin-bottom: 20px;
+    font-family: 'Lora', sans-serif;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    color: $light-blue-text-color;
+  }
+}

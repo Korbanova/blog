@@ -4,11 +4,10 @@ import {ArticleType} from "../../../../types/article.type";
 import {ActiveParamsType} from "../../../../types/active-params.type";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CategoryType} from "../../../../types/category.type";
-import {Observable} from "rxjs";
-import {environment} from "../../../../environments/environment";
-import {HttpClient} from "@angular/common/http";
 import {ActiveParamsUtil} from "../../../shared/utils/active-params.util";
 import {AppliedFilterType} from "../../../../types/applied-filter.type";
+import {CategoryService} from "../../../shared/services/category.service";
+import {debounceTime} from "rxjs";
 
 @Component({
   selector: 'app-blog',
@@ -26,23 +25,18 @@ export class BlogComponent implements OnInit {
 
   constructor(private articleService: ArticleService,
               private router: Router,
-              private http: HttpClient,
-              private activatedRoute: ActivatedRoute,) {
+              private categoryService: CategoryService,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
     // Получение категорий
-    this.getCategories()
+    this.categoryService.getCategories()
       .subscribe((result: CategoryType[]) => {
         this.categories = result;
-        console.log(this.categories)
 
         // Подписка на квери-параметры
-
         this.activatedRoute.queryParams
-          // .pipe(
-          //   debounceTime(500)
-          // )
           .subscribe(params => {
             this.activeParams = ActiveParamsUtil.processParams(params);
 
@@ -57,7 +51,6 @@ export class BlogComponent implements OnInit {
                 })
               }
             })
-            //
 
             // Запрос на получение статей
             this.articleService.getArticles(this.activeParams)
@@ -66,17 +59,13 @@ export class BlogComponent implements OnInit {
                 for (let i = 1; i <= data.pages; i++) {
                   this.pages.push(i);
                 }
+                if(!this.activeParams.page) this.activeParams.page = 1;
 
                 this.articles = data.items;
               })
           })
       })
 
-
-  }
-
-  getCategories(): Observable<CategoryType[]> {
-    return this.http.get<CategoryType[]>(environment.api + 'categories');
   }
 
   toggleFilter() {
@@ -89,7 +78,6 @@ export class BlogComponent implements OnInit {
       if (existingCategoryInParams) {
         this.activeParams.categories = this.activeParams.categories.filter(item => item !== url);
       } else {
-        // this.activeParams.types.push(url);
         this.activeParams.categories = [...this.activeParams.categories, url]
       }
     } else {

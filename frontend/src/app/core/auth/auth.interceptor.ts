@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
     // Если токены есть добавляем заголовок x-access-token и отправляем этот запрос
     if (tokens && tokens.accessToken) {
       const authReq = req.clone({
-        headers: req.headers.set('x-access-token', tokens.accessToken)
+        headers: req.headers.set('x-auth', tokens.accessToken)
       })
 
       return next.handle(authReq)

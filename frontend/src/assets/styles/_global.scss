@@ -40,14 +40,15 @@ html, body {
   font-weight: 400;
   color: $blue-text-color;
 
-  &::placeholder{
+  &::placeholder {
     color: $gray-text-color;
   }
 }
-.owl-theme .owl-nav.disabled+.owl-dots {
+
+.owl-theme .owl-nav.disabled + .owl-dots {
   position: absolute;
-    bottom: 10px;
-    left: calc(50% - 10px);
+  bottom: 10px;
+  left: calc(50% - 10px);
 }
 
 //.owl-dots .ng-star-inserted{
@@ -56,10 +57,15 @@ html, body {
 //  left: calc(50% - 10px);
 //}
 
-.owl-theme .owl-dots .owl-dot span{
+.owl-theme .owl-dots .owl-dot span {
   background: transparent;
   border: 1px solid white;
 }
+
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
   background: white;
+}
+
+.text-danger {
+  color: red;
 }

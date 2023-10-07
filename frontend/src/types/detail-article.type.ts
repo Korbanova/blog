@@ -1,16 +1,8 @@
+import {CommentType} from "./comment.type";
+
 export type DetailArticleType = {
   text: string,
-  comments: {
-    id: string,
-    text: string,
-    date: string,
-    likesCount: number
-    dislikesCount: number,
-    user: {
-      "id": string,
-      "name": string
-    }
-  }[],
+  comments: CommentType[],
   commentsCount: number,
   id: string,
   title: string,

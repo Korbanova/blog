@@ -1,27 +1,28 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ArticleService} from "../../../shared/services/article.service";
 import {ArticleType} from "../../../../types/article.type";
 import {ActiveParamsType} from "../../../../types/active-params.type";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {CategoryType} from "../../../../types/category.type";
 import {ActiveParamsUtil} from "../../../shared/utils/active-params.util";
 import {AppliedFilterType} from "../../../../types/applied-filter.type";
 import {CategoryService} from "../../../shared/services/category.service";
-import {debounceTime} from "rxjs";
+import {Subscription, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
   styleUrls: ['./blog.component.scss']
 })
-export class BlogComponent implements OnInit {
+export class BlogComponent implements OnInit, OnDestroy {
   articles: ArticleType[] = [];
   categories: CategoryType[] = [];
   pages: number[] = [];
   activeParams: ActiveParamsType = {categories: []};
   appliedFilters: AppliedFilterType[] = [];
-
   filterOpen = false;
+  private subscription: Subscription | null = null;
+
 
   constructor(private articleService: ArticleService,
               private router: Router,
@@ -31,41 +32,45 @@ export class BlogComponent implements OnInit {
 
   ngOnInit() {
     // Получение категорий
-    this.categoryService.getCategories()
-      .subscribe((result: CategoryType[]) => {
-        this.categories = result;
+    this.subscription = this.categoryService.getCategories()
+      .pipe(
+        switchMap((categoryData: CategoryType[]) => {
+          this.categories = categoryData;
 
-        // Подписка на квери-параметры
-        this.activatedRoute.queryParams
-          .subscribe(params => {
-            this.activeParams = ActiveParamsUtil.processParams(params);
+          // Получить квери-параметры
+          return this.activatedRoute.queryParams.pipe(
+            switchMap((params: Params) => {
+              this.activeParams = ActiveParamsUtil.processParams(params);
+              this.appliedFilters = [];
 
-            this.appliedFilters = [];
-
-            this.activeParams.categories.forEach(url => {
-              const foundCategory = this.categories.find(item => item.url === url);
-              if(foundCategory){
-                this.appliedFilters.push({
-                  name: foundCategory.name,
-                  urlParam: url
-                })
-              }
-            })
-
-            // Запрос на получение статей
-            this.articleService.getArticles(this.activeParams)
-              .subscribe(data => {
-                this.pages = [];
-                for (let i = 1; i <= data.pages; i++) {
-                  this.pages.push(i);
+              this.activeParams.categories.forEach(url => {
+                const foundCategory = this.categories.find(item => item.url === url);
+                if (foundCategory) {
+                  this.appliedFilters.push({
+                    name: foundCategory.name,
+                    urlParam: url
+                  })
                 }
-                if(!this.activeParams.page) this.activeParams.page = 1;
-
-                this.articles = data.items;
               })
-          })
-      })
+              // Получить статей
+              return this.articleService.getArticles(this.activeParams);
+            })
+          )
+        })
+      )
+      .subscribe(data => {
+        this.pages = [];
+        for (let i = 1; i <= data.pages; i++) {
+          this.pages.push(i);
+        }
+        if (!this.activeParams.page) this.activeParams.page = 1;
 
+        this.articles = data.items;
+      })
+  }
+
+  ngOnDestroy() {
+    this.subscription?.unsubscribe();
   }
 
   toggleFilter() {
@@ -91,9 +96,7 @@ export class BlogComponent implements OnInit {
   }
 
   removeAppliedFilter(appliedFilter: AppliedFilterType) {
-
     this.activeParams.categories = this.activeParams.categories.filter(item => item !== appliedFilter.urlParam);
-
 
     this.activeParams.page = 1;
     this.router.navigate(['/blog'], {

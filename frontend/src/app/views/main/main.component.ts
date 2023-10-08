@@ -119,9 +119,6 @@ export class MainComponent implements OnInit {
       1240: {
         items: 3,
       },
-      // 1250: {
-      //   items: 3,
-      // }
     },
     nav: false
   }

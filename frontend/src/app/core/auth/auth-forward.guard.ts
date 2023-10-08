@@ -9,8 +9,7 @@ import {Location} from "@angular/common";
 })
 export class AuthForwardGuard implements CanActivate {
   constructor(private authService: AuthService,
-              private location: Location) {
-  }
+              private location: Location) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,

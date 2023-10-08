@@ -30,14 +30,14 @@ footer.footer {
         margin-right: 20px;
         list-style: none;
 
-        &.active a {
-          color: $light-blue-text-color;
-        }
-
         a {
           color: $blue-text-color;
           cursor: pointer;
           text-decoration: none;
+
+          &.active {
+            color: $light-blue-text-color;
+          }
         }
       }
     }

@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core';
-import {RequestTypeType} from "../../../types/request-type.type";
 import {Observable, Subject} from "rxjs";
 import {DefaultResponseType} from "../../../types/default-response.type";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {ActiveParamsType} from "../../../types/active-params.type";
-import {ArticleType} from "../../../types/article.type";
 import {CommentType} from "../../../types/comment.type";
 import {ActionsCommentType} from "../../../types/actions-comment.type";
 import {ActionsUserCommentType} from "../../../types/actions-user-comment.type";

@@ -58,7 +58,6 @@ export class ServicesService {
     }
 
     return this.http.post<DefaultResponseType>(environment.api + 'requests', body);
-
   }
 
 }

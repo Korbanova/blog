@@ -7,19 +7,32 @@
       <nav>
         <ul>
           <li>
-            <a routerLink="/">Услуги</a>
+            <a routerLink="/"
+               fragment="services"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="linkActiveOptions">Услуги</a>
           </li>
           <li>
-            <a routerLink="/catalog">О нас</a>
+            <a routerLink="/"
+               fragment="company"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="linkActiveOptions">О нас</a>
           </li>
           <li>
-            <a routerLink="/catalog">Статьи</a>
+            <a routerLink="/blog"
+               routerLinkActive="active">Статьи</a>
           </li>
           <li>
-            <a routerLink="/" fragment="reviews">Отзывы</a>
+            <a routerLink="/"
+               fragment="reviews"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="linkActiveOptions">Отзывы</a>
           </li>
           <li>
-            <a routerLink="/" fragment="delivery">Контакты</a>
+            <a routerLink="/"
+               fragment="contact"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="linkActiveOptions">Контакты</a>
           </li>
         </ul>
       </nav>
@@ -87,8 +100,3 @@
     </div>
   </div>
 </footer>
-
-<!--<ng-template #popup>-->
-<!--<order-call></order-call>-->
-
-<!--</ng-template>-->

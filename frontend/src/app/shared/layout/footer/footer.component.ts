@@ -1,6 +1,6 @@
 import {Component, ElementRef, TemplateRef, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {Router} from "@angular/router";
+import {IsActiveMatchOptions, Router} from "@angular/router";
 import {OrderCallComponent} from "../../components/order-call/order-call.component";
 import {RequestTypeType} from "../../../../types/request-type.type";
 
@@ -10,14 +10,18 @@ import {RequestTypeType} from "../../../../types/request-type.type";
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent {
-  constructor(private dialog: MatDialog,
-              private router: Router) {
+  public linkActiveOptions: IsActiveMatchOptions = {
+    matrixParams: 'exact',
+    queryParams: 'exact',
+    paths: 'exact',
+    fragment: 'exact',
+  };
+  constructor(private dialog: MatDialog) {
   }
 
   openPopup(){
-     const dialogRef = this.dialog.open(OrderCallComponent, {
+     this.dialog.open(OrderCallComponent, {
        data: {type: RequestTypeType.consultation}
-       // data: {isConsultation: false, name: 'Very '}
      });
   }
 }

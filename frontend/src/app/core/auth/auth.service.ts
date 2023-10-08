@@ -13,7 +13,6 @@ import {UserInfoResponseType} from "../../../types/user-info-response.type";
 export class AuthService {
   public accessTokenKey = 'accessToken';
   public refreshTokenKey = 'refreshToken';
-  // public userIdKey = 'userId';
   private userInfoKey: string = 'userInfo';
 
   public isLogged$: Subject<boolean> = new Subject<boolean>();
@@ -29,7 +28,6 @@ export class AuthService {
       password,
       rememberMe
     })
-
   }
 
   signup(name: string, email: string, password: string): Observable<DefaultResponseType | LoginResponseType> {
@@ -89,30 +87,14 @@ export class AuthService {
   }
 
   public userInfo(): Observable<DefaultResponseType | UserInfoResponseType> {
-    //Получить инф о пользователе. Здесь нужно отправить запрос
     const tokens = this.getTokens();
     if (tokens && tokens.accessToken) {
-      return this.http.get<DefaultResponseType | UserInfoResponseType>(environment.api + 'users', {
-        headers: {'x-auth': tokens.accessToken}
-      });
+      return this.http.get<DefaultResponseType | UserInfoResponseType>(environment.api + 'users');
     }
 
     throw throwError(() => 'Can not find token')
 
   }
-
-  //
-  // get userId(): null | string {
-  //   return localStorage.getItem(this.userIdKey);
-  // }
-  //
-  // set userId(id: null | string) {
-  //   if (id) {
-  //     localStorage.setItem(this.userIdKey, id);
-  //   } else {
-  //     localStorage.removeItem(this.userIdKey);
-  //   }
-  // }
 
   public setUserInfoInStorage(info: UserInfoType): void {
     localStorage.setItem(this.userInfoKey, JSON.stringify(info));

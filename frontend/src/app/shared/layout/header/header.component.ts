@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserInfoType} from "../../../../types/user-info.type";
 import {AuthService} from "../../../core/auth/auth.service";
-import {Router} from "@angular/router";
+import {IsActiveMatchOptions, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {DefaultResponseType} from "../../../../types/default-response.type";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -13,6 +13,12 @@ import {HttpErrorResponse} from "@angular/common/http";
 })
 export class HeaderComponent implements OnInit {
   userInfo: UserInfoType | null = null;
+  public linkActiveOptions: IsActiveMatchOptions = {
+    matrixParams: 'exact',
+    queryParams: 'exact',
+    paths: 'exact',
+    fragment: 'exact',
+  };
 
   constructor(private authService: AuthService,
               private _snackBar: MatSnackBar,

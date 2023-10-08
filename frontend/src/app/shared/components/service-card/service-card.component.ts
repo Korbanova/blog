@@ -16,7 +16,7 @@ export class ServiceCardComponent {
   }
 
   openPopup() {
-    const dialogRef = this.dialog.open(OrderCallComponent, {
+    this.dialog.open(OrderCallComponent, {
       data: {type: RequestTypeType.order, serviceName: this.service.title}
     });
   }

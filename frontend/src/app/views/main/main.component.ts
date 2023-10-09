@@ -137,7 +137,7 @@ export class MainComponent implements OnInit {
   }
 
   openPopup() {
-    const dialogRef = this.dialog.open(OrderCallComponent, {
+    this.dialog.open(OrderCallComponent, {
       data: {type: RequestTypeType.order}
     });
   }

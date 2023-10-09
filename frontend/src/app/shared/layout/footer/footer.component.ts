@@ -16,12 +16,18 @@ export class FooterComponent {
     paths: 'exact',
     fragment: 'exact',
   };
+  isOpenBurger = false;
+
   constructor(private dialog: MatDialog) {
   }
 
-  openPopup(){
-     this.dialog.open(OrderCallComponent, {
-       data: {type: RequestTypeType.consultation}
-     });
+  openPopup() {
+    this.dialog.open(OrderCallComponent, {
+      data: {type: RequestTypeType.consultation}
+    });
+  }
+
+  activeBurger() {
+    this.isOpenBurger = !this.isOpenBurger;
   }
 }

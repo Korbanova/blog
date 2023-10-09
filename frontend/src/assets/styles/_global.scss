@@ -23,12 +23,7 @@ html, body {
   font-size: 16px;
   font-weight: 400;
   color: #FFFFFF;
-
-  //&.small{
-  //  padding: 10px;
-  //}
 }
-
 
 .input, .select {
   padding: 20px;
@@ -51,12 +46,6 @@ html, body {
   left: calc(50% - 10px);
 }
 
-//.owl-dots .ng-star-inserted{
-//  position: absolute;
-//  bottom: 0;
-//  left: calc(50% - 10px);
-//}
-
 .owl-theme .owl-dots .owl-dot span {
   background: transparent;
   border: 1px solid white;
@@ -68,4 +57,32 @@ html, body {
 
 .text-danger {
   color: red;
+}
+
+.title {
+  @include head-lora-38;
+}
+
+.burger {
+  display: none;
+  text-align: right;
+
+  svg {
+    margin-left: 20px;
+    width: 36px;
+    height: 36px;
+    fill: $light-blue-text-color;
+  }
+}
+
+.close {
+  display: none;
+}
+
+
+@media screen and (max-width: 1250px) {
+  .container {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
 }

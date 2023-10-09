@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
     paths: 'exact',
     fragment: 'exact',
   };
+  isOpenBurger = false;
 
   constructor(private authService: AuthService,
               private _snackBar: MatSnackBar,
@@ -51,5 +52,9 @@ export class HeaderComponent implements OnInit {
     this.authService.removeUserInfo();
     this._snackBar.open('Вы вышли из сиситемы');
     this.router.navigate(['/']);
+  }
+
+  activeBurger() {
+    this.isOpenBurger = !this.isOpenBurger;
   }
 }

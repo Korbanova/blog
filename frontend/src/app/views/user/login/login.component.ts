@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DefaultResponseType} from "../../../../types/default-response.type";
 import {AuthService} from "../../../core/auth/auth.service";
@@ -7,19 +7,21 @@ import {LoginResponseType} from "../../../../types/login-response.type";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserInfoResponseType} from "../../../../types/user-info-response.type";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   loginForm = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required]],
     rememberMe: [false]
   });
-
+  private subscriptionLogin: Subscription | null = null;
+  private subscriptionInfo: Subscription | null = null;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -29,7 +31,7 @@ export class LoginComponent {
 
   login(): void {
     if (this.loginForm.valid && this.loginForm.value.email && this.loginForm.value.password) {
-      this.authService.login(this.loginForm.value.email, this.loginForm.value.password, !!this.loginForm.value.rememberMe)
+      this.subscriptionLogin = this.authService.login(this.loginForm.value.email, this.loginForm.value.password, !!this.loginForm.value.rememberMe)
         .subscribe({
           next: (data: LoginResponseType | DefaultResponseType) => {
             let error = null;
@@ -50,7 +52,7 @@ export class LoginComponent {
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
 
             //Получить инф о пользователе.
-            this.authService.userInfo()
+            this.subscriptionInfo = this.authService.userInfo()
               .subscribe((data: UserInfoResponseType | DefaultResponseType) => {
                 let error = null;
                 if ((data as DefaultResponseType).error !== undefined) {
@@ -78,5 +80,10 @@ export class LoginComponent {
           }
         })
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptionInfo?.unsubscribe();
+    this.subscriptionLogin?.unsubscribe();
   }
 }

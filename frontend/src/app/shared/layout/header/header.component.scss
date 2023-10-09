@@ -1,6 +1,7 @@
 @import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixing";
 
-header.header {
+.header {
   padding: 40px 0;
 
   .container {
@@ -15,7 +16,8 @@ header.header {
       display: block;
       width: 85px;
       height: 47px;
-      img{
+
+      img {
         height: 100%;
         object-fit: contain;
       }
@@ -80,3 +82,85 @@ header.header {
     }
   }
 }
+
+@media screen and (max-width: 1250px) {
+  .header {
+    .container {
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 1065px) {
+  .header {
+    .container {
+      .header-phone {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .header {
+    .container {
+      grid-template-areas:
+				"logo action "
+				"menu menu";
+      gap: 10px;
+      grid-template-columns: 1fr 3fr;
+      grid-template-rows: 1fr 1fr;
+
+      .logo {
+        grid-area: logo;
+      }
+
+      .header-menu {
+        grid-area: menu;
+        width: 80%;
+        margin: 0 auto;
+
+        nav ul {
+          justify-content: space-between;
+
+          li {
+            margin-right: 0;
+          }
+        }
+      }
+
+      .header-action {
+        grid-area: action;
+        justify-content: end;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .header {
+    .container {
+      .header-menu {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .burger {
+    display: block;
+  }
+  .header {
+    .container {
+      .header-menu {
+        justify-content: space-between;
+
+        @include menu;
+      }
+    }
+  }
+}
+
+

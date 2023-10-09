@@ -52,7 +52,7 @@ export class BlogComponent implements OnInit, OnDestroy {
                   })
                 }
               })
-              // Получить статей
+              // Получить статьи
               return this.articleService.getArticles(this.activeParams);
             })
           )

@@ -1,98 +1,134 @@
 @import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixing";
 
-footer.footer {
+.footer {
   padding-top: 40px;
   padding-bottom: 54px;
   background-color: #B9D5FD;
 
-  .footer-menu {
-    display: flex;
-    margin-bottom: 40px;
-    align-items: center;
+  .container {
+    .footer-menu {
+      display: flex;
+      margin-bottom: 40px;
+      align-items: center;
 
-    .logo {
-      display: block;
-      width: 85px;
-      height: 47px;
+      .logo {
+        display: block;
+        width: 85px;
+        height: 47px;
 
-      img {
-        height: 100%;
-        object-fit: contain;
+        img {
+          height: 100%;
+          object-fit: contain;
+        }
+      }
+
+      .menu {
+        ul {
+          display: flex;
+          margin-left: 40px;
+          padding: 0;
+
+          li {
+            margin-right: 20px;
+            list-style: none;
+
+            a {
+              color: $blue-text-color;
+              cursor: pointer;
+              text-decoration: none;
+
+              &.active {
+                color: $light-blue-text-color;
+              }
+            }
+          }
+        }
       }
     }
 
-    nav ul {
+    .footer-contacts {
       display: flex;
-      margin-left: 40px;
-      padding: 0;
+      margin-bottom: 6px;
 
-      li {
-        margin-right: 20px;
-        list-style: none;
+      .footer-contact {
+        margin-right: 60px;
 
-        a {
+
+        .footer-contact-head {
+          margin-bottom: 10px;
+          font-family: 'Montserrat', sans-serif;
+          font-weight: 500;
+          color: $light-blue-text-color;
+        }
+
+        .footer-contact-info {
           color: $blue-text-color;
-          cursor: pointer;
+          line-height: 130%;
           text-decoration: none;
 
-          &.active {
-            color: $light-blue-text-color;
+          &.footer-address {
+            max-width: 253px;
+          }
+
+          &.footer-social a {
+            margin-right: 12px;
+          }
+
+          &.footer-phone {
+            display: flex;
+            flex-direction: column;
+
+            a {
+              text-decoration: none;
+              color: $blue-text-color;
+            }
+          }
+
+          .button {
+            margin-top: 10px;
+            width: 153px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
           }
         }
       }
     }
+
+    .footer-text {
+      color: $light-blue-text-color;
+    }
   }
+}
 
-  .footer-contacts {
-    display: flex;
-    margin-bottom: 6px;
+@media screen and (max-width: 855px) {
+  .footer {
+    .container {
+      .footer-contacts {
+        flex-wrap: wrap;
+        justify-content: space-between;
 
-    .footer-contact {
-      margin-right: 60px;
-
-
-      .footer-contact-head {
-        margin-bottom: 10px;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 500;
-        color: $light-blue-text-color;
-      }
-
-      .footer-contact-info {
-        color: $blue-text-color;
-        line-height: 130%;
-        text-decoration: none;
-
-        &.footer-address {
-          max-width: 253px;
-        }
-
-        &.footer-social a {
-          margin-right: 12px;
-        }
-
-        &.footer-phone {
-          display: flex;
-          flex-direction: column;
-
-          a {
-            text-decoration: none;
-            color: $blue-text-color;
-          }
-        }
-
-        .button {
-          margin-top: 10px;
-          width: 153px;
-          font-family: 'Montserrat', sans-serif;
-          font-size: 12px;
-          font-weight: 500;
+        .footer-contact {
+          margin-right: 40px;
+          margin-bottom: 20px;
         }
       }
     }
   }
+}
 
-  .footer-text {
-    color: $light-blue-text-color;
+@media screen and (max-width: 575px) {
+  .burger {
+    display: block;
+  }
+  .footer {
+    .container {
+      .footer-menu {
+        justify-content: space-between;
+
+        @include menu;
+      }
+    }
   }
 }

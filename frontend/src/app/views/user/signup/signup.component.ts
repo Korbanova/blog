@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {DefaultResponseType} from "../../../../types/default-response.type";
 import {AuthService} from "../../../core/auth/auth.service";
@@ -7,19 +7,23 @@ import {LoginResponseType} from "../../../../types/login-response.type";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserInfoResponseType} from "../../../../types/user-info-response.type";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent {
+export class SignupComponent implements OnDestroy{
   signupForm = this.fb.group({
     userName: ['', [Validators.required, Validators.pattern(/^([А-ЯЁ][а-яё]+\s*([А-ЯЁ][а-яё]+\s?)*)$/)]],
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)]],
     agree: [false, [Validators.requiredTrue]],
   })
+
+  private subscriptionSignup: Subscription | null = null;
+  private subscriptionInfo: Subscription | null = null;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -30,7 +34,7 @@ export class SignupComponent {
   signup(): void {
     if (this.signupForm.valid && this.signupForm.value.email && this.signupForm.value.password
       && this.signupForm.value.userName && this.signupForm.value.agree)
-      this.authService.signup(this.signupForm.value.userName, this.signupForm.value.email, this.signupForm.value.password)
+      this.subscriptionSignup = this.authService.signup(this.signupForm.value.userName, this.signupForm.value.email, this.signupForm.value.password)
         .subscribe({
           next: (data: DefaultResponseType | LoginResponseType) => {
             let error = null;
@@ -49,9 +53,9 @@ export class SignupComponent {
 
             // set tokens
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
-            
+
             //Получить инф о пользователе.
-            this.authService.userInfo()
+            this.subscriptionInfo = this.authService.userInfo()
               .subscribe((data: UserInfoResponseType | DefaultResponseType) => {
                 let error = null;
                 if ((data as DefaultResponseType).error !== undefined) {
@@ -78,5 +82,9 @@ export class SignupComponent {
             }
           }
         })
+  }
+  ngOnDestroy() {
+    this.subscriptionInfo?.unsubscribe();
+    this.subscriptionSignup?.unsubscribe();
   }
 }

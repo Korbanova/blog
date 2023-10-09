@@ -1,16 +1,16 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ArticleType} from "../../../../types/article.type";
 import {DetailArticleType} from "../../../../types/detail-article.type";
 import {ArticleService} from "../../../shared/services/article.service";
 import {AuthService} from "../../../core/auth/auth.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Params} from "@angular/router";
 import {environment} from "../../../../environments/environment";
 import {CommentsService} from "../../../shared/services/comments.service";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {DefaultResponseType} from "../../../../types/default-response.type";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {finalize} from "rxjs";
+import {finalize, Subscription, switchMap, tap} from "rxjs";
 import {CommentType} from "../../../../types/comment.type";
 import {ActionsCommentType} from "../../../../types/actions-comment.type";
 import {ActionsUserCommentType} from "../../../../types/actions-user-comment.type";
@@ -21,7 +21,7 @@ import {ActionsUserCommentType} from "../../../../types/actions-user-comment.typ
   styleUrls: ['./detail.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy {
   article!: DetailArticleType;
   relatedArticles: ArticleType[] = [];
   isLogged = false;
@@ -29,6 +29,11 @@ export class DetailComponent implements OnInit {
   restComments = 0;
   isShowedLoader = false;
   actionCommentTypes = ActionsCommentType;
+  private subscriptionRoute: Subscription | null = null;
+  private subscriptionComment: Subscription | null = null;
+  private subscriptionLoadComment: Subscription | null = null;
+  private subscriptionAddComment: Subscription | null = null;
+  private subscriptionAddActive: Subscription | null = null;
 
   commentForm = this.fb.group({
     textComment: ['', {validators: [Validators.required, this.noWhitespaceValidator], updateOn: 'change'}],
@@ -44,49 +49,64 @@ export class DetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subscriptionRoute = this.activatedRoute.params
+      .pipe(
+        switchMap((params: Params) => {
 
-    this.activatedRoute.params.subscribe(params => {
-      //Получение инф-ции о статье
-      this.processArticle(params['url']);
+          //Получение инф-ции о статье
+          return this.articleService.getArticle(params['url']).pipe(
+            switchMap((articleData: DetailArticleType) => {
+              this.article = articleData;
+              this.restComments = articleData.commentsCount - 3;
 
-      //Получение связанных статей
-      this.articleService.getRelatedArticle(params['url'])
-        .subscribe((data: ArticleType[]) => {
-          this.relatedArticles = data;
-          // console.log(this.article)
-        });
+              //Получение связанных статей
+              return this.articleService.getRelatedArticle(this.article.url).pipe(
+                switchMap((dataRelated: ArticleType[]) => {
+                  this.relatedArticles = dataRelated;
 
-    })
+                  // Получение инф-ю об активности
+                  return this.commentsService.getAllActions(this.article.id);
+                })
+              )
+            })
+          )
+        })
+      )
+      .subscribe(
+        this.processActions()
+      )
+
     // подписываемся на событие добавления комментария
-    this.commentsService.isAddComment$.subscribe(isAddComment => {
-      this.processArticle(this.article.url, true);
-    })
-  }
-
-  processArticle(articleUrl: string, isAddComment: boolean = false) {
-    this.articleService.getArticle(articleUrl)
+    this.subscriptionComment = this.commentsService.isAddComment$.pipe(
+      switchMap(() => this.articleService.getArticle(this.article.url))
+    )
       .subscribe((data: DetailArticleType) => {
         this.article = data;
         this.commentForm.patchValue({textComment: ''});
         this.restComments = data.commentsCount - 3;
 
-        isAddComment ? this._snackBar.open('Комментарий добавлен') : this.processActions();
+        this._snackBar.open('Комментарий добавлен');
+    })
+  }
 
-      });
+  ngOnDestroy() {
+    this.subscriptionRoute?.unsubscribe();
+    this.subscriptionComment?.unsubscribe();
+    this.subscriptionLoadComment?.unsubscribe();
+    this.subscriptionAddComment?.unsubscribe();
+    this.subscriptionAddActive?.unsubscribe();
   }
 
   // Получение инф-ю об активности
   private processActions() {
-    this.commentsService.getAllActions(this.article.id).subscribe(
-      {
-        next: (commentsData: ActionsUserCommentType[]) => {
-          commentsData.forEach(item => {
-            let commentFounded = this.article.comments.find(articleComment => articleComment.id === item.comment);
-            if (commentFounded) commentFounded.action = item.action;
-          })
-        }
+    return {
+      next: (commentsData: ActionsUserCommentType[]) => {
+        commentsData.forEach(item => {
+          let commentFounded = this.article.comments.find(articleComment => articleComment.id === item.comment);
+          if (commentFounded) commentFounded.action = item.action;
+        })
       }
-    )
+    }
   }
 
   noWhitespaceValidator(control: FormControl) {
@@ -95,7 +115,7 @@ export class DetailComponent implements OnInit {
 
   addComment() {
     const textComment = this.commentForm.get('textComment')?.value as string;
-    this.commentsService.addComment(textComment, this.article.id)
+    this.subscriptionAddComment = this.commentsService.addComment(textComment, this.article.id)
       .subscribe(
         {
           next: (data: DefaultResponseType) => {
@@ -113,22 +133,22 @@ export class DetailComponent implements OnInit {
 
   loadMoreComments() {
     this.isShowedLoader = true;
-    this.commentsService.getComments(this.article.comments.length, this.article.id)
+    this.subscriptionLoadComment = this.commentsService.getComments(this.article.comments.length, this.article.id)
       .pipe(
-        finalize(() => this.isShowedLoader = false)
-      )
-      .subscribe({
-        next: (data: { allCount: number, comments: CommentType[] }) => {
-          this.article.comments = [...this.article.comments, ...data.comments.slice(0, 10)] as CommentType[];
+        finalize(() => this.isShowedLoader = false),
+        switchMap((dataComments: { allCount: number, comments: CommentType[] }) => {
+          this.article.comments = [...this.article.comments, ...dataComments.comments.slice(0, 10)] as CommentType[];
           this.restComments -= 10;
-
-          this.processActions();
-        }
-      })
+          return this.commentsService.getAllActions(this.article.id)
+        })
+      )
+      .subscribe(
+        this.processActions()
+      )
   }
 
   addActionComment(idComment: string, action: ActionsCommentType) {
-    this.commentsService.applyAction(idComment, action).subscribe(
+    this.subscriptionAddActive = this.commentsService.applyAction(idComment, action).subscribe(
       {
         next: (data: DefaultResponseType) => {
           if (!data.error) {
@@ -172,9 +192,7 @@ export class DetailComponent implements OnInit {
               }
             }
             this._snackBar.open(message);
-
           }
-
         },
         error: (errorResponse: HttpErrorResponse) => {
           if (errorResponse.error && errorResponse.error.message) {
@@ -191,6 +209,6 @@ export class DetailComponent implements OnInit {
           }
         }
       }
-    );
+    )
   }
 }

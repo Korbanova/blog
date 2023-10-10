@@ -27,9 +27,9 @@
     margin-bottom: 20px;
     margin-left: auto;
     margin-right: auto;
-    @include head-lora-38;
     line-height: 130%;
-    &.main{
+
+    &.main {
       max-width: 411px;
     }
   }
@@ -39,17 +39,18 @@
     font-size: 20px;
   }
 
-  .order-popup-info{
-    .order-popup-text{
+  .order-popup-info {
+    .order-popup-text {
       margin-bottom: 40px;
       text-align: center;
-      font-family: 'Montserrat',sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 14px;
       font-weight: 500;
       line-height: 130%;
       color: $dark-text-color;
     }
-    .button{
+
+    .button {
       width: 73px;
       padding: 10px 20px;
       box-sizing: border-box;
@@ -60,7 +61,7 @@
     }
   }
 
-  .order-popup-error{
+  .order-popup-error {
     margin-top: 7px;
     color: red;
   }
@@ -81,4 +82,129 @@
 
 .select::after {
   content: "";
+}
+
+@media screen and (max-width: 915px) {
+  .order-popup {
+    width: 650px;
+    height: 449px;
+  }
+}
+
+@media screen and (max-width: 815px) {
+  .order-popup {
+    width: 600px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .order-popup {
+    width: 500px;
+  }
+
+  .title {
+    @include head-lora-30;
+  }
+
+}
+
+@media screen and (max-width: 630px) {
+  .order-popup {
+    width: 450px;
+
+    .auth-form {
+      .auth-inputs {
+        .auth-input {
+          input, select {
+            width: 400px;
+          }
+        }
+      }
+
+      .auth-button {
+        button {
+          &.button {
+            width: 400px;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+@media screen and (max-width: 562px) {
+  .order-popup {
+    width: 400px;
+
+    .auth-form {
+      .auth-inputs {
+        .auth-input {
+          input, select {
+            width: 350px;
+          }
+        }
+      }
+      .auth-button {
+        button {
+          &.button {
+            width: 350px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 562px) {
+  .title {
+    font-size: 27px;
+  }
+  .order-popup {
+    width: 370px;
+
+    .auth-form {
+      .auth-inputs {
+        .auth-input {
+          input, select {
+            width: 300px;
+          }
+        }
+      }
+      .auth-button {
+        button {
+          &.button {
+            width: 300px;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 470px) {
+  .title {
+    font-size: 25px;
+  }
+  .order-popup {
+    width: 300px;
+
+    .auth-form {
+      .auth-inputs {
+        .auth-input {
+          input, select {
+            width: 250px;
+          }
+        }
+      }
+      .auth-button {
+        button {
+          &.button {
+            width: 250px;
+          }
+        }
+      }
+    }
+  }
 }

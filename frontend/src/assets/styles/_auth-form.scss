@@ -1,21 +1,19 @@
 @import "variables";
 
 .auth-form {
-  //margin-top: 14px;
-
   .auth-title {
     margin-bottom: 40px;
     font-family: 'Lora', sans-serif;
     font-size: 36px;
     font-weight: 400;
     color: $light-blue-text-color;
+    line-height: 130%;
   }
 
   .auth-inputs {
 
     .auth-input {
       margin-bottom: 5px;
-
 
       input, select {
         width: 422px;

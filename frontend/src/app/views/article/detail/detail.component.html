@@ -7,7 +7,7 @@
 
     <div class="detail-head-article">
       <div class="detail-description">
-        <div class="detail-description-title">{{article.title}}</div>
+        <div class="detail-description-title title">{{article.title}}</div>
         <div class="detail-description-text">{{article.description}}</div>
       </div>
       <div class="detail-image" style="background-image: url({{serverStaticPath + article.image}})"></div>
@@ -65,7 +65,7 @@
         </div>
 
         <article class="comments">
-          <div class="comments-title">Комментарии к статье</div>
+          <div class="comments-title title">Комментарии к статье</div>
           <div class="comments-add" *ngIf="isLogged;else log">
             <div class="comments-no" *ngIf="article.commentsCount === 0">
               Будьте первым, кто оставит свой комментарий к статье!
@@ -177,10 +177,12 @@
       </div>
       <aside class="related-article">
         <div class="related-article-title"> Читайте также:</div>
-        <article-card
-          *ngFor="let article of relatedArticles"
-          [article]="article">
-        </article-card>
+        <div class="related-article-items">
+          <article-card
+            *ngFor="let article of relatedArticles"
+            [article]="article">
+          </article-card>
+        </div>
       </aside>
     </div>
   </div>

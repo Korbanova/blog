@@ -7,11 +7,6 @@
   .container {
     .blog-title {
       margin-bottom: 40px;
-      font-family: 'Lora', sans-serif;
-      color: $light-blue-text-color;
-      font-size: 38px;
-      font-style: normal;
-      font-weight: 400;
     }
 
     .blog-head {
@@ -167,6 +162,50 @@
 
           &:last-child {
             margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1240px) {
+  .blog {
+    padding-top: 50px;
+    padding-bottom: 80px;
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .blog {
+    .container {
+      .blog-title {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .blog {
+    padding-top: 30px;
+    padding-bottom: 50px;
+
+    .container {
+      .blog-title {
+        margin-bottom: 20px;
+      }
+
+      .blog-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 10px;
+
+        .blog-applied-filters {
+          .blog-applied-filter {
+            font-size: 12px;
           }
         }
       }

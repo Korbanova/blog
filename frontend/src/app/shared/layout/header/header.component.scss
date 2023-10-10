@@ -95,6 +95,9 @@
 @media screen and (max-width: 1065px) {
   .header {
     .container {
+      .header-action{
+        justify-content: end;
+      }
       .header-phone {
         display: none;
       }

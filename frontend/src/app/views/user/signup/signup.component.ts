@@ -23,7 +23,6 @@ export class SignupComponent implements OnDestroy{
   })
 
   private subscriptionSignup: Subscription | null = null;
-  private subscriptionInfo: Subscription | null = null;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -55,7 +54,7 @@ export class SignupComponent implements OnDestroy{
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
 
             //Получить инф о пользователе.
-            this.subscriptionInfo = this.authService.userInfo()
+            this.authService.userInfo()
               .subscribe((data: UserInfoResponseType | DefaultResponseType) => {
                 let error = null;
                 if ((data as DefaultResponseType).error !== undefined) {
@@ -84,7 +83,6 @@ export class SignupComponent implements OnDestroy{
         })
   }
   ngOnDestroy() {
-    this.subscriptionInfo?.unsubscribe();
     this.subscriptionSignup?.unsubscribe();
   }
 }

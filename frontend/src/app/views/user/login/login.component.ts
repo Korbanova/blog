@@ -21,7 +21,6 @@ export class LoginComponent implements OnDestroy {
     rememberMe: [false]
   });
   private subscriptionLogin: Subscription | null = null;
-  private subscriptionInfo: Subscription | null = null;
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -52,20 +51,29 @@ export class LoginComponent implements OnDestroy {
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
 
             //Получить инф о пользователе.
-            this.subscriptionInfo = this.authService.userInfo()
-              .subscribe((data: UserInfoResponseType | DefaultResponseType) => {
-                let error = null;
-                if ((data as DefaultResponseType).error !== undefined) {
-                  error = (data as DefaultResponseType).message;
-                  this._snackBar.open(error);
-                  throw new Error(error);
-                }
-                const userInfoResponse = data as UserInfoResponseType;
+            this.authService.userInfo()
+              .subscribe({
+                next: (data: UserInfoResponseType | DefaultResponseType) => {
+                  let error = null;
+                  if ((data as DefaultResponseType).error !== undefined) {
+                    error = (data as DefaultResponseType).message;
+                    this._snackBar.open(error);
+                    throw new Error(error);
+                  }
+                  const userInfoResponse = data as UserInfoResponseType;
 
-                this.authService.setUserInfoInStorage({
-                  fullName: userInfoResponse.name,
-                  userId: userInfoResponse.id,
-                })
+                  this.authService.setUserInfoInStorage({
+                    fullName: userInfoResponse.name,
+                    userId: userInfoResponse.id,
+                  })
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  if (errorResponse.error && errorResponse.error.message) {
+                    this._snackBar.open(errorResponse.error.message);
+                  } else {
+                    this._snackBar.open('Ошибка при авторизации');
+                  }
+                }
               })
 
             this._snackBar.open('Вы успешно авторизовались');
@@ -83,7 +91,6 @@ export class LoginComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptionInfo?.unsubscribe();
     this.subscriptionLogin?.unsubscribe();
   }
 }

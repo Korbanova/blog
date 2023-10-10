@@ -20,3 +20,98 @@
     }
   }
 }
+
+@media screen and (max-width: 1245px) {
+  .login {
+    .container {
+      justify-content: space-between;
+
+      .page-image {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 1115px) {
+  .login {
+    .container {
+      .auth-form {
+        margin-top: 0;
+      }
+
+      .page-image {
+        width: 500px;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .login {
+    .container {
+      .page-image {
+        width: 440px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 930px) {
+  .login {
+    .container {
+      flex-wrap: wrap;
+      justify-content: center;
+
+      .auth-form {
+        margin-bottom: 20px;
+      }
+      .page-image {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 455px) {
+  .login {
+    .container {
+      flex-wrap: wrap;
+      justify-content: center;
+
+      .auth-form {
+        width: 380px;
+
+        .auth-title {
+          font-size: 32px;
+        }
+
+        .auth-inputs {
+          .auth-input {
+            input, select {
+              width: 100%;
+            }
+          }
+        }
+
+        .auth-button {
+          button {
+            &.button {
+              width: 100%;
+            }
+          }
+        }
+      }
+
+      .page-image {
+        display: none;
+      }
+    }
+  }
+}
+

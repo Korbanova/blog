@@ -9,7 +9,7 @@
   <div *ngIf="isError === null || isError === true; then mainBlock else successResponseBlock"></div>
 
   <ng-template #mainBlock>
-    <div class="order-popup-title main">
+    <div class="order-popup-title title main">
       <span *ngIf="requestType === requestTypes.order">Заявка на услугу</span>
       <span *ngIf="requestType === requestTypes.consultation">Закажите бесплатную консультацию!</span>
     </div>

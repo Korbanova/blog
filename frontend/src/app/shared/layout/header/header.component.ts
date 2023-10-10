@@ -24,6 +24,8 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService,
               private _snackBar: MatSnackBar,
               private router: Router) {
+    console.log(this.authService.getIsLoggedIn())
+    console.log(this.authService.getUserInfo())
     if (this.authService.getIsLoggedIn()) {
       this.userInfo = this.authService.getUserInfo();
     }

@@ -93,7 +93,6 @@ export class AuthService {
     }
 
     throw throwError(() => 'Can not find token')
-
   }
 
   public setUserInfoInStorage(info: UserInfoType): void {

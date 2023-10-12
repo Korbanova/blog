@@ -7,14 +7,14 @@ import {LoginResponseType} from "../../../../types/login-response.type";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserInfoResponseType} from "../../../../types/user-info-response.type";
-import {Subscription} from "rxjs";
+import {ReplaySubject, Subscription, switchMap, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnDestroy{
+export class SignupComponent implements OnDestroy {
   signupForm = this.fb.group({
     userName: ['', [Validators.required, Validators.pattern(/^([А-ЯЁ][а-яё]+\s*([А-ЯЁ][а-яё]+\s?)*)$/)]],
     email: ['', [Validators.email, Validators.required]],
@@ -22,7 +22,7 @@ export class SignupComponent implements OnDestroy{
     agree: [false, [Validators.requiredTrue]],
   })
 
-  private subscriptionSignup: Subscription | null = null;
+  onDestroy = new ReplaySubject(1);
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -33,9 +33,9 @@ export class SignupComponent implements OnDestroy{
   signup(): void {
     if (this.signupForm.valid && this.signupForm.value.email && this.signupForm.value.password
       && this.signupForm.value.userName && this.signupForm.value.agree)
-      this.subscriptionSignup = this.authService.signup(this.signupForm.value.userName, this.signupForm.value.email, this.signupForm.value.password)
-        .subscribe({
-          next: (data: DefaultResponseType | LoginResponseType) => {
+      this.authService.signup(this.signupForm.value.userName, this.signupForm.value.email, this.signupForm.value.password)
+        .pipe(
+          switchMap((data: DefaultResponseType | LoginResponseType) => {
             let error = null;
             if ((data as DefaultResponseType).error !== undefined) {
               error = (data as DefaultResponseType).message;
@@ -52,27 +52,28 @@ export class SignupComponent implements OnDestroy{
 
             // set tokens
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
-
             //Получить инф о пользователе.
-            this.authService.userInfo()
-              .subscribe((data: UserInfoResponseType | DefaultResponseType) => {
-                let error = null;
-                if ((data as DefaultResponseType).error !== undefined) {
-                  error = (data as DefaultResponseType).message;
-                  this._snackBar.open(error);
-                  throw new Error(error);
-                }
-                const userInfoResponse = data as UserInfoResponseType;
+            return this.authService.userInfo()
+          }),
+          takeUntil(this.onDestroy)
+        )
+        .subscribe({
+          next: ((data: UserInfoResponseType | DefaultResponseType) => {
+            let error = null;
+            if ((data as DefaultResponseType).error !== undefined) {
+              error = (data as DefaultResponseType).message;
+              this._snackBar.open(error);
+              throw new Error(error);
+            }
+            const userInfoResponse = data as UserInfoResponseType;
 
-                this.authService.setUserInfoInStorage({
-                  fullName: userInfoResponse.name,
-                  userId: userInfoResponse.id,
-                })
-              })
-
+            this.authService.setUserInfoInStorage({
+              fullName: userInfoResponse.name,
+              userId: userInfoResponse.id,
+            })
             this._snackBar.open('Вы успешно зарегистрировались');
             this.router.navigate(['/']);
-          },
+          }),
           error: (errorResponse: HttpErrorResponse) => {
             if (errorResponse.error && errorResponse.error.message) {
               this._snackBar.open(errorResponse.error.message);
@@ -82,7 +83,9 @@ export class SignupComponent implements OnDestroy{
           }
         })
   }
+
   ngOnDestroy() {
-    this.subscriptionSignup?.unsubscribe();
+    this.onDestroy.next(1);
+    this.onDestroy.complete();
   }
 }

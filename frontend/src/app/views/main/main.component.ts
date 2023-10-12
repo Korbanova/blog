@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ServiceType} from "../../../types/service.type";
 import {ArticleService} from "../../shared/services/article.service";
 import {ArticleType} from "../../../types/article.type";
@@ -9,6 +9,7 @@ import {OrderCallComponent} from "../../shared/components/order-call/order-call.
 import {RequestTypeType} from "../../../types/request-type.type";
 import {MatDialog} from "@angular/material/dialog";
 import {AdvantageType} from "../../../types/advantage.type";
+import {ReplaySubject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-main',
@@ -16,7 +17,7 @@ import {AdvantageType} from "../../../types/advantage.type";
   styleUrls: ['./main.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
   services: ServiceType[] = [];
   topArticles: ArticleType[] = [];
 
@@ -123,6 +124,8 @@ export class MainComponent implements OnInit {
     nav: false
   }
 
+  onDestroy = new ReplaySubject(1);
+
   constructor(private articleService: ArticleService,
               private servicesService: ServicesService,
               private dialog: MatDialog) {
@@ -130,7 +133,9 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.articleService.getTopArticles()
+    this.articleService.getTopArticles().pipe(
+      takeUntil(this.onDestroy)
+    )
       .subscribe((data: ArticleType[]) => {
         this.topArticles = data;
       })
@@ -140,5 +145,10 @@ export class MainComponent implements OnInit {
     this.dialog.open(OrderCallComponent, {
       data: {type: RequestTypeType.order}
     });
+  }
+
+  ngOnDestroy() {
+    this.onDestroy.next(1);
+    this.onDestroy.complete();
   }
 }

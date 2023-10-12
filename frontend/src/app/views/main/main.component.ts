@@ -9,7 +9,7 @@ import {OrderCallComponent} from "../../shared/components/order-call/order-call.
 import {RequestTypeType} from "../../../types/request-type.type";
 import {MatDialog} from "@angular/material/dialog";
 import {AdvantageType} from "../../../types/advantage.type";
-import {ReplaySubject, takeUntil} from "rxjs";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-main',
@@ -17,9 +17,9 @@ import {ReplaySubject, takeUntil} from "rxjs";
   styleUrls: ['./main.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent{
   services: ServiceType[] = [];
-  topArticles: ArticleType[] = [];
+  topArticles?: Observable<ArticleType[]>;
 
   banners: BannersType[] = [
     {
@@ -124,31 +124,16 @@ export class MainComponent implements OnInit, OnDestroy {
     nav: false
   }
 
-  onDestroy = new ReplaySubject(1);
-
   constructor(private articleService: ArticleService,
               private servicesService: ServicesService,
               private dialog: MatDialog) {
     this.services = servicesService.getServices();
-  }
-
-  ngOnInit() {
-    this.articleService.getTopArticles().pipe(
-      takeUntil(this.onDestroy)
-    )
-      .subscribe((data: ArticleType[]) => {
-        this.topArticles = data;
-      })
+    this.topArticles = articleService.getTopArticles();
   }
 
   openPopup() {
     this.dialog.open(OrderCallComponent, {
       data: {type: RequestTypeType.order}
     });
-  }
-
-  ngOnDestroy() {
-    this.onDestroy.next(1);
-    this.onDestroy.complete();
   }
 }

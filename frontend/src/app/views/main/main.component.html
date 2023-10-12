@@ -92,14 +92,14 @@
   </div>
 </section>
 
-<section class="articles">
+<section class="articles" *ngIf="topArticles | async">
   <div class="container">
     <div class="articles-title title">
       Популярные статьи из блога
     </div>
     <div class="articles-items">
       <article-card
-        *ngFor="let article of topArticles"
+        *ngFor="let article of topArticles | async"
         [article]="article">
       </article-card>
     </div>
